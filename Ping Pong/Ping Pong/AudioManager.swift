@@ -36,7 +36,7 @@ class AudioManager {
         }
     
         if err != nil {
-            print("問題あり \(err)")
+            print("問題あり \(String(describing: err))")
         }
     }
     
@@ -58,7 +58,7 @@ class AudioManager {
         }
         
         if err != nil {
-            print("問題あり \(err)")
+            print("問題あり \(String(describing: err))")
         }
     }
 

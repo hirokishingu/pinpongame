@@ -9,16 +9,12 @@
 import SpriteKit
 import GameplayKit
 
-class stage7Scene: SKScene, SKPhysicsContactDelegate {
+class stage4Scene: SKScene, SKPhysicsContactDelegate {
     
     var star = SKSpriteNode()
     var ball = SKSpriteNode()
     var me = SKSpriteNode()
     var block = SKSpriteNode()
-    var block1 = SKSpriteNode()
-
-    
-    var touchCount = 0
     
     private var pausePanel:SKSpriteNode?
     
@@ -56,6 +52,7 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.collisionBitMask = ColliderType.ball
         ball.name = "ball"
         
+//        ブロックの定義
 //        block = self.childNode(withName: "block") as! SKSpriteNode
 //        block.physicsBody?.affectedByGravity = false
 //        block.physicsBody?.friction = 0
@@ -73,9 +70,6 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         border.restitution = 1
         self.physicsBody = border
         
-        block1 = self.childNode(withName: "block1") as! SKSpriteNode
-        block1.name = "block1"
-        
         startGame()
         
         if AudioManager.instance.isMusicOn == true{
@@ -85,6 +79,7 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
             AudioManager.instance.stopBGM()
             
         }
+        
         
         
     }
@@ -127,12 +122,11 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         
     }
     
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //        上に上がったmeが元に戻ってくる
         me.position.y = (-self.frame.height / 2) + 50
+
     }
-    
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
@@ -145,7 +139,6 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         }
         
     }
-    
     
     func didBegin(_ contact: SKPhysicsContact) {
         
@@ -162,16 +155,11 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         
         if firstBody.node?.name == "ball" && secondBody.node?.name == "star" {
             //        if firstBody.contactTestBitMask == 1 && secondBody.contactTestBitMask == 2 {
-            
-            touchCount += 1
-            
-            if touchCount == 3{
             secondBody.node?.removeFromParent()
             //            ステージ２に移動する
-            let scene = stage8Scene(fileNamed: "stage8")
+            let scene = stage5Scene(fileNamed: "stage5")
             scene?.scaleMode = .aspectFill
             self.view?.presentScene(scene!, transition: SKTransition.doorway(withDuration: 1))
-            }
             
             //            star.removeFromParent()
             //            self.scene?.isPaused = true
@@ -226,27 +214,20 @@ class stage7Scene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     override func update(_ currentTime: TimeInterval) {
         
         //        ボールがmeの下に来た時て負けてMainMenuに行く
-        //        if ball.position.y <= me.position.y - 20 {
-        //
-        //            let scene = MainMenuScene(fileNamed: "MainMenu")
-        //            scene!.scaleMode = .aspectFill
-        //
-        //            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
-        //
-        //        }
-        
-        //        block1が左右に動く動き
-        if block1.position.x >= 99{
-            block1.run(SKAction.moveTo(x: -100, duration: 3))
-        }else if block1.position.x <= -99{
-            block1.run(SKAction.moveTo(x: 100, duration: 3))
+        if ball.position.y <= me.position.y - 20 {
+            
+            let scene = MainMenuScene(fileNamed: "MainMenu")
+            scene!.scaleMode = .aspectFill
+            
+            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
+            
         }
         
     }
-    
     
     
 }

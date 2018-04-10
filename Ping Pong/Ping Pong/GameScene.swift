@@ -166,7 +166,7 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         me.position.y = (-self.frame.height / 2) + 50
-        enemy.position.y = self.frame.height / 2 + 50
+        enemy.position.y = self.frame.height / 2 - 50
 
     }
     
@@ -217,7 +217,8 @@ class GameScene: SKScene {
             addScore(playerWhoWon: enemy)
             
             
-        }else if ball.position.y >= enemy.position.y + 20 {
+        }
+        if ball.position.y >= enemy.position.y + 20 {
             
             addScore(playerWhoWon: me)
             

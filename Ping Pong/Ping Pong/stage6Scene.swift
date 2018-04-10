@@ -9,13 +9,13 @@
 import SpriteKit
 import GameplayKit
 
-class stage2Scene: SKScene, SKPhysicsContactDelegate {
+class stage6Scene: SKScene, SKPhysicsContactDelegate {
     
     var star = SKSpriteNode()
     var ball = SKSpriteNode()
     var me = SKSpriteNode()
     var block = SKSpriteNode()
-        
+    
     private var pausePanel:SKSpriteNode?
     
     private var musicBtn:SKSpriteNode?
@@ -84,7 +84,7 @@ class stage2Scene: SKScene, SKPhysicsContactDelegate {
     }
     
     func startGame(){
-        ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 10))
+        ball.physicsBody?.applyImpulse(CGVector(dx: 23, dy: 23))
     }
     
     
@@ -124,7 +124,6 @@ class stage2Scene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //        上に上がったmeが元に戻ってくる
         me.position.y = (-self.frame.height / 2) + 50
-
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -155,8 +154,8 @@ class stage2Scene: SKScene, SKPhysicsContactDelegate {
         if firstBody.node?.name == "ball" && secondBody.node?.name == "star" {
             //        if firstBody.contactTestBitMask == 1 && secondBody.contactTestBitMask == 2 {
             secondBody.node?.removeFromParent()
-            //            ステージ２に移動する
-            let scene = stage3Scene(fileNamed: "stage3")
+            //            クリアSceneに移動する
+            let scene = stage7Scene(fileNamed: "stage7")
             scene?.scaleMode = .aspectFill
             self.view?.presentScene(scene!, transition: SKTransition.doorway(withDuration: 1))
             
@@ -213,23 +212,22 @@ class stage2Scene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     override func update(_ currentTime: TimeInterval) {
         
         
         
         //        ボールがmeの下に来た時て負けてMainMenuに行く
-//        if ball.position.y <= me.position.y - 20 {
-//            
-//            let scene = MainMenuScene(fileNamed: "MainMenu")
-//            scene!.scaleMode = .aspectFill
-//            
-//            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
-//            
-//        }
-    
+        if ball.position.y <= me.position.y - 20 {
+            
+            let scene = MainMenuScene(fileNamed: "MainMenu")
+            scene!.scaleMode = .aspectFill
+            
+            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
+            
+        }
+        
     }
-    
-    
     
     
 }

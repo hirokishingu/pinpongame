@@ -9,15 +9,13 @@
 import SpriteKit
 import GameplayKit
 
-class stage9Scene: SKScene, SKPhysicsContactDelegate {
+class stage2Scene: SKScene, SKPhysicsContactDelegate {
     
     var star = SKSpriteNode()
     var ball = SKSpriteNode()
     var me = SKSpriteNode()
     var block = SKSpriteNode()
-    var block1 = SKSpriteNode()
-
-    
+        
     private var pausePanel:SKSpriteNode?
     
     private var musicBtn:SKSpriteNode?
@@ -54,14 +52,14 @@ class stage9Scene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.collisionBitMask = ColliderType.ball
         ball.name = "ball"
         
-//        block = self.childNode(withName: "block") as! SKSpriteNode
-//        block.physicsBody?.affectedByGravity = false
-//        block.physicsBody?.friction = 0
-//        block.physicsBody?.restitution = 1
-//        block.physicsBody?.isDynamic = false
-//        block.physicsBody?.contactTestBitMask = ColliderType.block
-//        block.physicsBody?.collisionBitMask = ColliderType.block
-//        block.name = "block"
+        block = self.childNode(withName: "block") as! SKSpriteNode
+        block.physicsBody?.affectedByGravity = false
+        block.physicsBody?.friction = 0
+        block.physicsBody?.restitution = 1
+        block.physicsBody?.isDynamic = false
+        block.physicsBody?.contactTestBitMask = ColliderType.block
+        block.physicsBody?.collisionBitMask = ColliderType.block
+        block.name = "block"
         
         me = self.childNode(withName: "me") as! SKSpriteNode
         me.position.y = (-self.frame.height / 2) + 50
@@ -70,9 +68,6 @@ class stage9Scene: SKScene, SKPhysicsContactDelegate {
         border.friction = 0
         border.restitution = 1
         self.physicsBody = border
-        
-        block1 = self.childNode(withName: "block1") as! SKSpriteNode
-        block1.name = "block1"
         
         startGame()
         
@@ -129,7 +124,7 @@ class stage9Scene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //        上に上がったmeが元に戻ってくる
         me.position.y = (-self.frame.height / 2) + 50
-        
+
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -161,7 +156,7 @@ class stage9Scene: SKScene, SKPhysicsContactDelegate {
             //        if firstBody.contactTestBitMask == 1 && secondBody.contactTestBitMask == 2 {
             secondBody.node?.removeFromParent()
             //            ステージ２に移動する
-            let scene = clearScene(fileNamed: "clear")
+            let scene = stage3Scene(fileNamed: "stage3")
             scene?.scaleMode = .aspectFill
             self.view?.presentScene(scene!, transition: SKTransition.doorway(withDuration: 1))
             
@@ -221,23 +216,17 @@ class stage9Scene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         
         
-        if block1.position.x >= 124{
-            block1.run(SKAction.moveTo(x: -125, duration: 3))
-        }else if block1.position.x <= -124{
-            block1.run(SKAction.moveTo(x: 125, duration: 3))
+        
+//                ボールがmeの下に来た時て負けてMainMenuに行く
+        if ball.position.y <= me.position.y - 20 {
+            
+            let scene = MainMenuScene(fileNamed: "MainMenu")
+            scene!.scaleMode = .aspectFill
+            
+            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
+            
         }
-        
-        
-        //        ボールがmeの下に来た時て負けてMainMenuに行く
-        //        if ball.position.y <= me.position.y - 20 {
-        //
-        //            let scene = MainMenuScene(fileNamed: "MainMenu")
-        //            scene!.scaleMode = .aspectFill
-        //
-        //            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
-        //
-        //        }
-        
+    
     }
     
     

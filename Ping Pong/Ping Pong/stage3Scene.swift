@@ -9,12 +9,16 @@
 import SpriteKit
 import GameplayKit
 
-class stage8Scene: SKScene, SKPhysicsContactDelegate {
+class stage3Scene: SKScene, SKPhysicsContactDelegate {
     
     var star = SKSpriteNode()
     var ball = SKSpriteNode()
     var me = SKSpriteNode()
     var block = SKSpriteNode()
+    
+    var block1 = SKSpriteNode()
+    var block2 = SKSpriteNode()
+
     
     private var pausePanel:SKSpriteNode?
     
@@ -52,14 +56,14 @@ class stage8Scene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.collisionBitMask = ColliderType.ball
         ball.name = "ball"
         
-//        block = self.childNode(withName: "block") as! SKSpriteNode
-//        block.physicsBody?.affectedByGravity = false
-//        block.physicsBody?.friction = 0
-//        block.physicsBody?.restitution = 1
-//        block.physicsBody?.isDynamic = false
-//        block.physicsBody?.contactTestBitMask = ColliderType.block
-//        block.physicsBody?.collisionBitMask = ColliderType.block
-//        block.name = "block"
+        block = self.childNode(withName: "block") as! SKSpriteNode
+        block.physicsBody?.affectedByGravity = false
+        block.physicsBody?.friction = 0
+        block.physicsBody?.restitution = 1
+        block.physicsBody?.isDynamic = false
+        block.physicsBody?.contactTestBitMask = ColliderType.block
+        block.physicsBody?.collisionBitMask = ColliderType.block
+        block.name = "block"
         
         me = self.childNode(withName: "me") as! SKSpriteNode
         me.position.y = (-self.frame.height / 2) + 50
@@ -76,10 +80,12 @@ class stage8Scene: SKScene, SKPhysicsContactDelegate {
         }else{
             musicBtn?.texture = SKTexture(imageNamed: "notSpeaker.png")
             AudioManager.instance.stopBGM()
-            
         }
         
-        
+//        特殊ブロックの設定
+        block1 = self.childNode(withName: "block1") as! SKSpriteNode
+        block2 = self.childNode(withName: "block2") as! SKSpriteNode
+
         
     }
     
@@ -124,7 +130,6 @@ class stage8Scene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         //        上に上がったmeが元に戻ってくる
         me.position.y = (-self.frame.height / 2) + 50
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,7 +161,7 @@ class stage8Scene: SKScene, SKPhysicsContactDelegate {
             //        if firstBody.contactTestBitMask == 1 && secondBody.contactTestBitMask == 2 {
             secondBody.node?.removeFromParent()
             //            ステージ２に移動する
-            let scene = stage9Scene(fileNamed: "stage9")
+            let scene = stage4Scene(fileNamed: "stage4")
             scene?.scaleMode = .aspectFill
             self.view?.presentScene(scene!, transition: SKTransition.doorway(withDuration: 1))
             
@@ -213,22 +218,34 @@ class stage8Scene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
     override func update(_ currentTime: TimeInterval) {
         
         
-        
         //        ボールがmeの下に来た時て負けてMainMenuに行く
-        //        if ball.position.y <= me.position.y - 20 {
-        //
-        //            let scene = MainMenuScene(fileNamed: "MainMenu")
-        //            scene!.scaleMode = .aspectFill
-        //
-        //            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
-        //
-        //        }
+        if ball.position.y <= me.position.y - 20 {
+
+            let scene = MainMenuScene(fileNamed: "MainMenu")
+            scene!.scaleMode = .aspectFill
+            
+            self.view?.presentScene(scene!, transition: SKTransition.fade(withDuration: 1))
+            
+        }
+        
+//        block1が左右に動く動き
+        if block1.position.x >= 99{
+            block1.run(SKAction.moveTo(x: -100, duration: 3))
+        }else if block1.position.x <= -99{
+            block1.run(SKAction.moveTo(x: 100, duration: 3))
+        }
+        if block2.position.x >= 99{
+            block2.run(SKAction.moveTo(x: -100, duration: 3))
+        }else if block2.position.x <= -99{
+            block2.run(SKAction.moveTo(x: 100, duration: 3))
+            
+        }
         
     }
-    
     
     
     
